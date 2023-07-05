@@ -17,7 +17,7 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Install pack tool
-        uses: buildpacks/github-actions/setup-pack@v4.1.0
+        uses: buildpacks/github-actions/setup-pack@v5.0.0
       - name: Build oci image
         run: |
           mvn --batch-mode --update-snapshots package -Dmaven.test.skip
