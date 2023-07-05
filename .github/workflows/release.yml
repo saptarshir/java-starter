@@ -1,0 +1,26 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_javabase_api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build and test with Maven
+        run: |
+          mvn --batch-mode --update-snapshots package -Dmaven.test.skip
+      - name: Build image
+        uses: buildpacks/github-actions/setup-pack@v4.1.0
+        run: |
+          mvn --batch-mode --update-snapshots package -Dmaven.test.skip
+          pack build javabase-streams --buildpack paketo-buildpacks/adoptium --buildpack paketo-buildpacks/java --path ./javabase-streams/target/javabase-streams-0.1.0-SNAPSHOT-jar-with-dependencies.jar
