@@ -19,8 +19,9 @@ jobs:
       - name: Build and test with Maven
         run: |
           mvn --batch-mode --update-snapshots package -Dmaven.test.skip
-      - name: Build image
+      - name: Install pack tool
         uses: buildpacks/github-actions/setup-pack@v4.1.0
+      - name: Build oci image
         run: |
           mvn --batch-mode --update-snapshots package -Dmaven.test.skip
           pack build javabase-streams --buildpack paketo-buildpacks/adoptium --buildpack paketo-buildpacks/java --path ./javabase-streams/target/javabase-streams-0.1.0-SNAPSHOT-jar-with-dependencies.jar
